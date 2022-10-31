@@ -35,7 +35,9 @@ const Homepage = () => {
         alignItems: 'center',
       }}
     >
-      {status === 'loading' && <CircularProgress size={100} color="success" />}
+      {status === 'loading' && (
+        <CircularProgress size={100} sx={{ color: 'primary.contrastText' }} />
+      )}
       {status === 'error' && (
         <Typography color="primary.light">
           Something didn't go well :/
