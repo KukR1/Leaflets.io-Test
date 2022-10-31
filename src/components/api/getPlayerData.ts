@@ -5,7 +5,7 @@ export type IPlayerProps = {
   name: string;
   avatar: string;
 };
-export type PlayerProps = IPlayerProps[];
+
 
 export const getPlayerData = async (): Promise<IPlayerProps[]> => {
   const response = await axios.get(
