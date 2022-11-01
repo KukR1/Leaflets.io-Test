@@ -1,28 +1,34 @@
-import { useState } from 'react';
-import { getPlayerData, IPlayerProps } from '../components/api/getPlayerData';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
   MenuItem,
   SelectChangeEvent,
-  Typography,
 } from '@mui/material';
-import { useQuery, UseQueryResult } from 'react-query';
 import Dropdown from '../components/dropdown/Dropdown';
 import ButtonNext from '../components/button/ButtonNext';
 import { useNavigate } from 'react-router-dom';
+import { getPlayers } from '../store/playerSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
 
 const Homepage = () => {
   const [state, setState] = useState('');
-  const { data, status }: UseQueryResult<IPlayerProps[], Error> = useQuery<
-    IPlayerProps[],
-    Error,
-    IPlayerProps[]
-  >('players', getPlayerData);
+  const dispatch = useAppDispatch();
+  const { players } = useAppSelector((state) => state.players);
+  const loading = useAppSelector((state) => state.players.loading);
+
+  const initApp = useCallback(async () => {
+    await dispatch(getPlayers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    initApp();
+  }, []);
 
   const handleChange = (e: SelectChangeEvent<string>) => {
     setState(e.target.value);
   };
+
   let navigate = useNavigate();
 
   return (
@@ -35,18 +41,13 @@ const Homepage = () => {
         alignItems: 'center',
       }}
     >
-      {status === 'loading' && (
+      {loading && (
         <CircularProgress size={100} sx={{ color: 'primary.contrastText' }} />
       )}
-      {status === 'error' && (
-        <Typography color="primary.light">
-          Something didn't go well :/
-        </Typography>
-      )}
-      {status === 'success' && (
+      {!loading && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           <Dropdown value={state} label="Players" onChange={handleChange}>
-            {data?.map((player) => {
+            {players?.map((player) => {
               return (
                 <MenuItem key={player.id} value={player.name}>
                   {player.name}

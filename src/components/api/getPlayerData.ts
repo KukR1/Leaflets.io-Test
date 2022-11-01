@@ -3,9 +3,7 @@ import axios from 'axios';
 export type IPlayerProps = {
   id: string;
   name: string;
-  avatar: string;
 };
-
 
 export const getPlayerData = async (): Promise<IPlayerProps[]> => {
   const response = await axios.get(
