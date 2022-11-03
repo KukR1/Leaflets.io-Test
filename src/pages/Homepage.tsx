@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../store/store';
 import {
   Box,
   CircularProgress,
@@ -7,29 +9,17 @@ import {
 } from '@mui/material';
 import Dropdown from '../components/dropdown/Dropdown';
 import ButtonNext from '../components/button/ButtonNext';
-import { useNavigate } from 'react-router-dom';
-import { getPlayers } from '../store/playerSlice';
-import { useAppDispatch, useAppSelector } from '../store/store';
 
 const Homepage = () => {
   const [state, setState] = useState('');
-  const dispatch = useAppDispatch();
+
   const { players } = useAppSelector((state) => state.players);
   const loading = useAppSelector((state) => state.players.loading);
-
-  const initApp = useCallback(async () => {
-    await dispatch(getPlayers());
-  }, [dispatch]);
-
-  useEffect(() => {
-    initApp();
-  }, []);
+  let navigate = useNavigate();
 
   const handleChange = (e: SelectChangeEvent<string>) => {
     setState(e.target.value);
   };
-
-  let navigate = useNavigate();
 
   return (
     <Box
