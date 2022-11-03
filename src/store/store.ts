@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
 import playerReducer from './playerSlice';
-
+/** 
+* Configure of the RTK store.
+* @param {Object} players parameter  
+* @return {Object} Returns reducer
+*/
 export const store = configureStore({
   reducer: {
     players: playerReducer,

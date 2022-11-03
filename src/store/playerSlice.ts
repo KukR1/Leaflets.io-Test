@@ -13,7 +13,11 @@ const initialState: PlayerState = {
   loading: false,
   errors: null
 };
-
+/** 
+* Fetching data from the API 
+* @param {String, Object} 'players/getPlayers' , callback
+* @return {Array<T>} Returns the fetched data
+*/
 export const getPlayers = createAsyncThunk<IPlayerProps[]>('players/getPlayers', async (_, _thunkApi) => {
   try {
     const response = await axios.get(
@@ -25,8 +29,11 @@ export const getPlayers = createAsyncThunk<IPlayerProps[]>('players/getPlayers',
     return _thunkApi.rejectWithValue(error);
   }
 
-});
-
+/** 
+* Creating the Slicer in order to add actions
+* @param {Object} state , object of reducers  
+* @return {Object || boolean} Returns state and/or boolean
+*/});
 export const playerSlice = createSlice({
   name: 'players',
   initialState,
